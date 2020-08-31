@@ -16,3 +16,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/threads', 'ThreadsController@index')->name('threads.index');
+Route::get('/threads/{thread}', 'ThreadsController@show')->name('thread.show');
+Route::post('/threads/{thread}/replies', 'RepliesController@store')->name('reply.store');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
