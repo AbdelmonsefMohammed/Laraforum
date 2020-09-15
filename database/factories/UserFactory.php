@@ -26,12 +26,22 @@ $factory->define(User::class, function (Faker $faker) {
         'remember_token' => Str::random(10),
     ];
 });
-
+$factory->define( App\Channel::class, function(Faker $faker){
+    $name = $faker->word;
+    return [
+        'name' => $name,
+        'slug' => $name
+    ];
+});
 $factory->define( App\Thread::class, function(Faker $faker){
     return [
         'user_id' => function ()
         {
             return factory('App\User')->create()->id;
+        },
+        'channel_id' => function ()
+        {
+            return factory('App\Channel')->create()->id;
         },
         'title' => $faker->sentence,
         'body'  => $faker->paragraph

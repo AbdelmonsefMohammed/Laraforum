@@ -24,11 +24,34 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    LaraForum
                 </a>
-                <a class="navbar-brand"  href="{{ route('threads.index') }}">
-                    Threads
-                </a>
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown active">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Browse
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                              <a class="dropdown-item" href="{{ route('threads.index') }}">All Threads</a>
+                              @auth
+                                <a class="dropdown-item" href="{{ route('threads.index') }}?by={{auth()->user()->name}} ">My Threads</a>
+                              @endauth
+                        </div>
+                    </li>
+
+                    <li class="nav-item dropdown active">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Channels
+                      </a>
+                      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          @foreach ($channels as $channel)
+                            <a class="dropdown-item" href="{{route('channels.show', ['channel'   => $channel->slug])}}">{{$channel->name}}</a>
+                          @endforeach
+
+
+                      </div>
+                    </li>
+                  </ul>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -58,6 +81,9 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('threads.create') }}">
+                                     New Thread
+                                    </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

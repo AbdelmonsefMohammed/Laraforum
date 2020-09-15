@@ -27,7 +27,7 @@
 
             <div class="card">
                 
-                <div class="card-header"><a href="#">{{$reply->user->name}}</a> said: {{$reply->created_at->diffForHumans()}}</div>
+                <div class="card-header"><a href="#">{{$reply->user->name}}</a> said {{$reply->created_at->diffForHumans()}} ...</div>
                 <div class="card-body">
                     <div class="body">{{$reply->body}}</div>
                 </div>
@@ -40,7 +40,10 @@
     @auth
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <form method="POST" action="{{route('reply.store' , $thread->id)}}">
+                <form method="POST" action="{{route('reply.store',[
+                    'channel'   => $thread->channel->slug,
+                    'thread'    => $thread->id
+                ])}}">
                     @csrf
                     <div class="form-group">
                         <textarea class="form-control" name="body" cols="30" rows="5" placeholder="Have something to say?"></textarea>
