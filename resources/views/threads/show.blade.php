@@ -6,7 +6,18 @@
     <div class="row">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header"><h4><a href="#">{{$thread->user->name}}</a> posted: {{$thread->title}}</h4></div>
+                <div class="card-header d-flex justify-content-between">
+                    <h4><a href="{{route('profile.show', [$thread->user->name])}}">{{$thread->user->name}}</a> posted: {{$thread->title}}</h4>
+                    @can('update', $thread)
+                        <form action="{{route('threads.destroy',['channel' => $thread->channel->slug,'thread' => $thread->id])}}" method="post">
+                            @csrf
+                            @method('DELETE')
+
+                            <button type="submit" class="btn btn-danger">Delete Thread</button>
+                        </form>
+                    @endcan
+
+                </div>
 
                 <div class="card-body">
 
@@ -26,7 +37,7 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <a href="#">{{$reply->user->name}}</a> said {{$reply->created_at->diffForHumans()}} ...
+                            <a href="{{route('profile.show', [$reply->user->name])}}">{{$reply->user->name}}</a> said {{$reply->created_at->diffForHumans()}} ...
                         </div>
                         
                         <form method="POST" action="{{route('favorite.store',['reply'   => $reply->id])}}">

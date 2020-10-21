@@ -78,7 +78,7 @@ class ThreadsController extends Controller
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function show($channelId, Thread $thread)
+    public function show($channel, Thread $thread)
     {
         $replies = $thread->replies()->paginate(10);
         return view('threads.show',compact('thread','replies'));
@@ -113,9 +113,15 @@ class ThreadsController extends Controller
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Thread $thread)
+    public function destroy($channel, Thread $thread)
     {
-        //
+        $this->authorize('update', $thread);
+        $thread->replies()->delete();
+        $thread->delete();
+        if(request()->wantsJson()){
+            return response([], 204);
+        }
+        return redirect('/threads');
     }
 
     // protected function getThreads(Channel $channel)
