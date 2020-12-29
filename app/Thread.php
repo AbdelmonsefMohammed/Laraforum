@@ -2,10 +2,13 @@
 
 namespace App;
 
+use App\Activity;
 use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
+    use RecordsActivity;
+
     protected $guarded = [];
 
     protected $with = ['user','channel'];
@@ -19,6 +22,7 @@ class Thread extends Model
             $builder->withCount('replies');
         });
     }
+
     public function replies()
     {
         return $this->hasMany(Reply::class);

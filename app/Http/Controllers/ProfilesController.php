@@ -46,9 +46,12 @@ class ProfilesController extends Controller
      */
     public function show(User $user)
     {
+        $activities = $user->activity()->latest()->with('subject')->take(15)->get()->groupBy(function($activity){
+            return $activity->created_at->format('y-m-d');
+        });
         $profileUser = $user;
-        $threads = $user->threads()->paginate(15);
-        return view('profiles.show',compact('profileUser','threads'));
+        // $threads = $user->threads()->paginate(15);
+        return view('profiles.show',compact('profileUser','activities'));
     }
 
     /**

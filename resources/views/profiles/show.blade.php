@@ -5,26 +5,14 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-                <div class="card-header d-flex justify-content-between">
-                    <h2>{{$profileUser->name}}</h2>
-                    <h5>Created since {{$profileUser->created_at->diffForHumans()}}</h5>
-                </div>
+            @foreach ($activities as $date =>$activity)
+                <h2>{{$date}}</h2>
+                @foreach ($activity as $record)
+                    @include("profiles.activities.{$record->type}", ['activity'  =>  $record])
+                @endforeach
 
-                <div class="card-body">
-                    @foreach ($threads as $thread)
-                        <article>
-                            <div class="d-flex justify-content-between">
-                            <a href="{{route('threads.show', [$thread->channel->slug , $thread->id])}}"><h4>{{$thread->title}}</h4></a>
-                            <span>{{$thread->created_at->diffForHumans()}}</span>
-                            </div>
-                            number of replies: {{$thread->replies_count}}
-                            <div class="body">{{$thread->body}}</div>
-                            <hr>
-                        </article>
-                    @endforeach
-                    {{$threads->links()}}
+            @endforeach
 
-                </div>
             </div>
         </div>
     </div>
